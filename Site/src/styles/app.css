@@ -1,0 +1,219 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  min-height: 100vh;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.header {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.header h1 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.nav-btn.active {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+
+.page-content {
+  margin-top: 1rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+}
+
+.field-row select,
+.guess-form input {
+  min-width: 160px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+}
+
+.checkbox-row {
+  justify-content: flex-start;
+}
+
+.primary-btn,
+.secondary-btn {
+  border-radius: 10px;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+}
+
+.primary-btn {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+
+.secondary-btn {
+  background: #f9fafb;
+}
+
+.engine-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.engine-topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.chip-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.hangman-figure {
+  width: 220px;
+  max-width: 100%;
+  stroke: #111827;
+  stroke-width: 4;
+  fill: none;
+}
+
+.word-display {
+  font-size: 1.5rem;
+  letter-spacing: 0.15rem;
+  margin: 0;
+  word-break: break-word;
+}
+
+.status-line {
+  margin: 0;
+  font-weight: 600;
+}
+
+.error-line {
+  margin: 0;
+  color: #b91c1c;
+}
+
+.guess-form {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.keyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.key-btn {
+  padding: 0.35rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+}
+
+.key-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actions-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+}
+
+.mode-card {
+  text-align: left;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #f9fafb;
+  padding: 0.75rem;
+  cursor: pointer;
+}
+
+.mode-card h3 {
+  margin: 0;
+}
+
+.mode-card p {
+  margin: 0.45rem 0 0;
+  color: #4b5563;
+}
+
+.mode-card.active {
+  border-color: #111827;
+  background: #eef2ff;
+}

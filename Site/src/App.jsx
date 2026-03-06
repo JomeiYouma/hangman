@@ -1,35 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Header } from './components/header.jsx'
+import { HomePage } from './pages/HomePage.jsx'
+import { SettingsPage } from './pages/SettingsPage.jsx'
+import { GameModePage } from './pages/GameModePage.jsx'
+import { ContactPage } from './pages/ContactPage.jsx'
+import './styles/app.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+	const [currentPage, setCurrentPage] = useState('home')
+	const [settings, setSettings] = useState({
+		difficulty: 'medium',
+		hints: true,
+		language: 'en-GB',
+	})
+	const [selectedMode, setSelectedMode] = useState('regular')
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	const updateSettings = (partialSettings) => {
+		setSettings((prev) => ({ ...prev, ...partialSettings }))
+	}
+
+	const renderPage = () => {
+		if (currentPage === 'home') {
+			return <HomePage settings={settings} selectedMode={selectedMode} />
+		}
+
+		if (currentPage === 'settings') {
+			return <SettingsPage settings={settings} onChange={updateSettings} />
+		}
+
+		if (currentPage === 'gamemode') {
+			return <GameModePage selectedMode={selectedMode} onChange={setSelectedMode} />
+		}
+
+		if (currentPage === 'contact') {
+			return <ContactPage />
+		}
+
+		return <HomePage settings={settings} selectedMode={selectedMode} />
+	}
+
+	return (
+		<main className="app-shell">
+			<Header currentPage={currentPage} onNavigate={setCurrentPage} />
+			<section className="page-content">{renderPage()}</section>
+		</main>
+	)
 }
 
 export default App

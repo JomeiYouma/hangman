@@ -1,16 +1,88 @@
-# React + Vite
+# Cipher Breach: Hangman Protocol
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application React/Vite de pendu transformee en experience "terminal de cracking".
 
-Currently, two official plugins are available:
+Le jeu garde les mecaniques du hangman, avec une UI immersive cyber:
+1. fond fullscreen anime type terminal (FaultyTerminal)
+2. ambiance hacking (texte, labels, cards, status)
+3. badge operateur 3D interactif (Lanyard)
+4. mode mind game (grille de cartes au lieu du clavier)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Fonctionnalites
 
-## React Compiler
+1. 4 modes de jeu:
+1. Brute force
+2. Chain breach (streak)
+3. Time exploit (timer)
+4. Cipher memory (mind game)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. API resiliente:
+1. appel API distant pour le mot
+2. timeout reseau
+3. fallback local FR/EN si l'API ne repond pas
 
-## Expanding the ESLint configuration
+3. Contact immersif:
+1. carte operateur dans un lanyard 3D draggable
+2. photo profil importee depuis [src/assets/photoProfileDetourage.png](src/assets/photoProfileDetourage.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stack
+
+1. React 19
+2. Vite 7
+3. Three.js + React Three Fiber + Drei + Rapier
+4. OGL (background shader terminal)
+5. ESLint
+
+## Installation
+
+```bash
+npm install
+```
+
+## Lancer le projet
+
+```bash
+npm run dev
+```
+
+L'app sera accessible sur l'URL affichee par Vite (souvent http://localhost:5173).
+
+## Scripts utiles
+
+```bash
+npm run dev      # mode developpement
+npm run build    # build production
+npm run preview  # preview du build
+npm run lint     # verification ESLint
+```
+
+## Personnalisation rapide
+
+1. Photo du badge contact:
+1. remplacer [src/assets/photoProfileDetourage.png](src/assets/photoProfileDetourage.png)
+
+2. Profil operateur (nom, role, lien):
+1. modifier [src/components/Lanyard.jsx](src/components/Lanyard.jsx)
+2. modifier [src/pages/ContactPage.jsx](src/pages/ContactPage.jsx)
+
+3. Identite visuelle cyber:
+1. modifier [src/styles/app.css](src/styles/app.css)
+
+4. Background terminal:
+1. regler les props dans [src/App.jsx](src/App.jsx)
+2. shader dans [src/components/FaultyTerminal.jsx](src/components/FaultyTerminal.jsx)
+
+## Structure principale
+
+1. [src/pages/HomePage.jsx](src/pages/HomePage.jsx): ecran de jeu principal
+2. [src/hooks/useHangmanGame.js](src/hooks/useHangmanGame.js): logique metier du jeu
+3. [src/services/hangmanApi.js](src/services/hangmanApi.js): API + fallback local
+4. [src/components/HangmanFigure.jsx](src/components/HangmanFigure.jsx): rendu du pendu
+5. [src/components/MindGameGrid.jsx](src/components/MindGameGrid.jsx): grille du mode mind game
+6. [src/components/FaultyTerminal.jsx](src/components/FaultyTerminal.jsx): fond terminal anime
+7. [src/components/Lanyard.jsx](src/components/Lanyard.jsx): badge 3D contact
+
+## Notes
+
+1. La config Vite accepte les .glb via `assetsInclude` dans [vite.config.js](vite.config.js).
+2. Le projet est en JavaScript (pas TypeScript).

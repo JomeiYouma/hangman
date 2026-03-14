@@ -56,6 +56,27 @@ npm run preview  # preview du build
 npm run lint     # verification ESLint
 ```
 
+## Deploiement GitHub Pages (Actions)
+
+Le projet contient un workflow pret a l'emploi:
+1. [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
+
+### Etapes a faire sur GitHub
+
+1. Push le projet sur la branche `main`.
+2. Ouvrir Settings > Pages dans ton repository.
+3. Dans Source, choisir `GitHub Actions`.
+4. Verifier que le workflow `Deploy To GitHub Pages` est lance apres un push.
+
+### URL finale
+
+1. Repo standard (`owner/repo`):
+1. `https://owner.github.io/repo/`
+2. Repo user page (`owner.github.io`):
+1. `https://owner.github.io/`
+
+La base Vite est geree automatiquement dans [vite.config.js](vite.config.js) selon l'environnement GitHub Actions.
+
 ## Personnalisation rapide
 
 1. Photo du badge contact:

@@ -34,6 +34,44 @@
 // URL de base de l'API. Définie comme constante car elle ne change pas.
 const API_BASE_URL = 'https://hangman.alexischarp.fr'
 
+// Timeout réseau (ms) pour éviter qu'une requête reste bloquée trop longtemps.
+const API_TIMEOUT_MS = 6000
+
+// Fallback local : permet de jouer même si l'API distante est indisponible.
+// On garde des mots simples sans caractères exotiques pour rester robustes.
+const FALLBACK_WORDS_BY_LOCALE = {
+  'fr-FR': [
+    'maison',
+    'orage',
+    'silence',
+    'horizon',
+    'verrou',
+    'cendre',
+    'foret',
+    'bougie',
+    'mystere',
+    'frisson',
+  ],
+  'en-GB': [
+    'shadow',
+    'whisper',
+    'midnight',
+    'lantern',
+    'hollow',
+    'graveyard',
+    'phantom',
+    'silence',
+    'mirror',
+    'moonlight',
+  ],
+}
+
+const pickFallbackWord = (locale) => {
+  const words = FALLBACK_WORDS_BY_LOCALE[locale] ?? FALLBACK_WORDS_BY_LOCALE['en-GB']
+  const randomIndex = Math.floor(Math.random() * words.length)
+  return words[randomIndex]
+}
+
 // --- fetchRandomWord ------------------------------------------------
 // Appelle l'API pour obtenir un mot aléatoire.
 //
@@ -57,37 +95,49 @@ export const fetchRandomWord = async (locale) => {
     body.set('locale', locale)  // Ajoute "locale=fr-FR" au corps
   }
 
-  // fetch() envoie la requête HTTP et retourne une Promise.
-  // await attend que le serveur réponde.
-  const response = await fetch(`${API_BASE_URL}/`, {
-    method: 'POST',                                       // Méthode HTTP (GET, POST, PUT, DELETE…)
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded', // Indique le format des données envoyées
-    },
-    body,  // Le corps de la requête (URLSearchParams se convertit automatiquement en string)
-  })
+  // AbortController permet de couper la requête après un délai.
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS)
 
-  // response.ok est true si le code HTTP est 200-299.
-  // Sinon (404, 500…), on lance une erreur.
-  if (!response.ok) {
-    throw new Error('Unable to reach the API. Check the API URL or server availability.')
+  try {
+    // fetch() envoie la requête HTTP et retourne une Promise.
+    // await attend que le serveur réponde.
+    const response = await fetch(`${API_BASE_URL}/`, {
+      method: 'POST',                                       // Méthode HTTP (GET, POST, PUT, DELETE…)
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', // Indique le format des données envoyées
+      },
+      body,  // Le corps de la requête (URLSearchParams se convertit automatiquement en string)
+      signal: controller.signal,
+    })
+
+    // response.ok est true si le code HTTP est 200-299.
+    // Sinon (404, 500…), on tombe sur le fallback local.
+    if (!response.ok) {
+      return pickFallbackWord(locale)
+    }
+
+    // response.json() parse la réponse JSON en objet JavaScript.
+    // C'est aussi une opération asynchrone → on utilise await.
+    const data = await response.json()
+
+    // Vérifications de la réponse
+    if (data.error) {
+      return pickFallbackWord(locale)
+    }
+
+    // typeof vérifie le type d'une variable en JavaScript.
+    // Les types possibles : 'string', 'number', 'boolean', 'object',
+    //                       'undefined', 'function', 'symbol', 'bigint'
+    if (!data.word || typeof data.word !== 'string') {
+      return pickFallbackWord(locale)
+    }
+
+    return data.word  // Retourne le mot (ex. "éléphant")
+  } catch {
+    // Si l'appel réseau échoue (offline, CORS, timeout...), on joue en local.
+    return pickFallbackWord(locale)
+  } finally {
+    clearTimeout(timeoutId)
   }
-
-  // response.json() parse la réponse JSON en objet JavaScript.
-  // C'est aussi une opération asynchrone → on utilise await.
-  const data = await response.json()
-
-  // Vérifications de la réponse
-  if (data.error) {
-    throw new Error(data.error)
-  }
-
-  // typeof vérifie le type d'une variable en JavaScript.
-  // Les types possibles : 'string', 'number', 'boolean', 'object',
-  //                       'undefined', 'function', 'symbol', 'bigint'
-  if (!data.word || typeof data.word !== 'string') {
-    throw new Error('API response is invalid.')
-  }
-
-  return data.word  // Retourne le mot (ex. "éléphant")
 }

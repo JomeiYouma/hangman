@@ -33,6 +33,7 @@ import { useState } from 'react'
 import { useHangmanGame } from '../hooks/useHangmanGame.js'
 import { HangmanFigure } from '../components/HangmanFigure.jsx'
 import { Keyboard } from '../components/Keyboard.jsx'
+import { MindGameGrid } from '../components/MindGameGrid.jsx'
 import { WordDisplay } from '../components/WordDisplay.jsx'
 
 // --- Composant HomePage ---------------------------------------------
@@ -67,12 +68,14 @@ export const HomePage = ({ settings, selectedMode }) => {
     maskedWord,
     usedLetters,
     wrongLetters,
+    mindGameCards,
     remainingLives,
     maxLives,          // ← Nombre total de vies (pour adapter le dessin du pendu)
     remainingSeconds,
     streak,
     canUseHint,
     onGuess,
+    onMindGameReveal,
     onHint,
     startNewGame,
   } = useHangmanGame({ settings, selectedMode })
@@ -97,7 +100,9 @@ export const HomePage = ({ settings, selectedMode }) => {
       ? 'Regular mode'
       : selectedMode === 'streak'
         ? 'Streak mode'
-        : 'Speedrun mode'
+        : selectedMode === 'speedrun'
+          ? 'Speedrun mode'
+          : 'Mind game mode'
 
   // --- Calcul du message de statut ----------------------------------
   const statusMessage =
@@ -151,31 +156,40 @@ export const HomePage = ({ settings, selectedMode }) => {
       {/* L'erreur n'apparaît que si « error » est truthy (non vide) */}
       {error && <p className="error-line">{error}</p>}
 
-      {/* --- Formulaire de saisie manuelle ---
-          <form onSubmit={…}> : quand l'utilisateur appuie sur Entrée
-          ou clique sur "Guess", handleSubmit est appelé.
+      {/* --- En mode mind game, on interdit la saisie clavier et le clavier virtuel.
+          Le joueur clique uniquement des cartes cachées dans la grille memory.
+          Dans les autres modes, on garde le formulaire + le clavier d'origine.
       */}
-      <form className="guess-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          maxLength={1}
-          value={letter}
-          onChange={(event) => setLetter(event.target.value)}
-          placeholder="Enter a letter"
-          disabled={status !== 'playing'}
-        />
-        <button className="primary-btn" type="submit" disabled={status !== 'playing'}>
-          Guess
-        </button>
-      </form>
+      {selectedMode === 'mindgame' ? (
+        <>
+          <p className="mindgame-instruction">Reveal a card to attempt a letter. Wrong reveals consume a life.</p>
+          <MindGameGrid cards={mindGameCards} disabled={status !== 'playing'} onReveal={onMindGameReveal} />
+        </>
+      ) : (
+        <>
+          <form className="guess-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              maxLength={1}
+              value={letter}
+              onChange={(event) => setLetter(event.target.value)}
+              placeholder="Enter a letter"
+              disabled={status !== 'playing'}
+            />
+            <button className="primary-btn" type="submit" disabled={status !== 'playing'}>
+              Guess
+            </button>
+          </form>
 
-      {/* --- Clavier virtuel ---
-          Les props transmises :
-            usedLetters → lettres déjà utilisées (pour les griser)
-            disabled    → true si la partie n'est pas en cours
-            onGuess     → fonction appelée quand on clique sur une touche
-      */}
-      <Keyboard usedLetters={usedLetters} disabled={status !== 'playing'} onGuess={onGuess} />
+          {/* --- Clavier virtuel ---
+              Les props transmises :
+                usedLetters → lettres déjà utilisées (pour les griser)
+                disabled    → true si la partie n'est pas en cours
+                onGuess     → fonction appelée quand on clique sur une touche
+          */}
+          <Keyboard usedLetters={usedLetters} disabled={status !== 'playing'} onGuess={onGuess} />
+        </>
+      )}
 
       {/* --- Boutons d'action --- */}
       <div className="actions-row">

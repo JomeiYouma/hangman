@@ -79,6 +79,37 @@ export const isSingleLetter = (value) => {
 // -------------------------------------------------------------------
 export const normalizeLetter = (value) => normalizeChar(value)
 
+// --- generateMindGameCards ----------------------------------------
+// Génère les cartes du mode "mind game".
+//
+// Idée : on prend l'alphabet a-z, on crée une carte par lettre,
+// puis on mélange pour que la position change à chaque partie.
+//
+// Retour :
+//   Array<{ id: string, letter: string, state: 'hidden'|'guessed'|'wrong' }>
+//
+// Pourquoi des IDs stables ?
+//   React a besoin d'une key unique pour chaque élément de liste.
+//   Ici on concatène la lettre et son index mélangé (ex. "m-7").
+// -------------------------------------------------------------------
+export const generateMindGameCards = () => {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('')
+
+  // Fisher-Yates : mélange en place uniforme d'un tableau.
+  for (let index = alphabet.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const current = alphabet[index]
+    alphabet[index] = alphabet[randomIndex]
+    alphabet[randomIndex] = current
+  }
+
+  return alphabet.map((letter, index) => ({
+    id: `${letter}-${index}`,
+    letter,
+    state: 'hidden',
+  }))
+}
+
 // --- getUniqueLetters ----------------------------------------------
 // Extrait les lettres UNIQUES et NORMALISÉES d'un mot.
 //

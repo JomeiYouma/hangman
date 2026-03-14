@@ -28,6 +28,33 @@
 // Debug  : console.log('[HangmanFigure] wrongCount:', wrongCount, 'maxLives:', maxLives)
 // ============================================================
 
+const FigureFrame = ({ children }) => {
+  return (
+    <svg viewBox="0 0 160 200" className="hangman-figure" aria-label="Hangman figure">
+      <defs>
+        <radialGradient id="figureFog" cx="50%" cy="35%" r="65%">
+          <stop offset="0%" stopColor="#5a111d" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#09060a" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="80" cy="100" rx="76" ry="92" className="figure-fog" fill="url(#figureFog)" />
+      {children}
+    </svg>
+  )
+}
+
+const Head = () => {
+  return (
+    <>
+      <circle className="head-part" cx="110" cy="55" r="15" />
+      <line className="scar-part" x1="102" y1="48" x2="106" y2="55" />
+      <line className="scar-part" x1="118" y1="48" x2="114" y2="55" />
+      <circle className="eye-glow" cx="104" cy="55" r="1.8" />
+      <circle className="eye-glow" cx="116" cy="55" r="1.8" />
+    </>
+  )
+}
+
 // --- Éléments SVG de la potence (le gibet) --------------------------
 // Chaque élément est une ligne (<line>) ou un groupe de lignes.
 //
@@ -67,39 +94,39 @@ export const HangmanFigure = ({ wrongCount, maxLives }) => {
   // ─────────────────────────────────────────────────────────────
   if (maxLives >= 9) {
     return (
-      <svg viewBox="0 0 160 200" className="hangman-figure" aria-label="Hangman figure">
+      <FigureFrame>
         {/* Étape 1 – Base (ligne horizontale en bas) */}
-        {wrongCount >= 1 && <line x1="20" y1="180" x2="120" y2="180" />}
+        {wrongCount >= 1 && <line className="gallows-part" x1="20" y1="180" x2="120" y2="180" />}
 
         {/* Étape 2 – Poteau vertical */}
-        {wrongCount >= 2 && <line x1="50" y1="180" x2="50" y2="20" />}
+        {wrongCount >= 2 && <line className="gallows-part" x1="50" y1="180" x2="50" y2="20" />}
 
         {/* Étape 3 – Poutre horizontale + corde (groupées dans un Fragment <>) */}
         {wrongCount >= 3 && (
           <>
-            <line x1="50" y1="20" x2="110" y2="20" />
-            <line x1="110" y1="20" x2="110" y2="40" />
+            <line className="gallows-part" x1="50" y1="20" x2="110" y2="20" />
+            <line className="rope-part" x1="110" y1="20" x2="110" y2="40" />
           </>
         )}
 
         {/* Étape 4 – Tête (cercle) */}
-        {wrongCount >= 4 && <circle cx="110" cy="55" r="15" />}
+        {wrongCount >= 4 && <Head />}
 
         {/* Étape 5 – Corps (ligne verticale) */}
-        {wrongCount >= 5 && <line x1="110" y1="70" x2="110" y2="120" />}
+        {wrongCount >= 5 && <line className="body-part" x1="110" y1="70" x2="110" y2="120" />}
 
         {/* Étape 6 – Bras gauche */}
-        {wrongCount >= 6 && <line x1="110" y1="85" x2="85" y2="105" />}
+        {wrongCount >= 6 && <line className="body-part" x1="110" y1="85" x2="85" y2="105" />}
 
         {/* Étape 7 – Bras droit */}
-        {wrongCount >= 7 && <line x1="110" y1="85" x2="135" y2="105" />}
+        {wrongCount >= 7 && <line className="body-part" x1="110" y1="85" x2="135" y2="105" />}
 
         {/* Étape 8 – Jambe gauche */}
-        {wrongCount >= 8 && <line x1="110" y1="120" x2="90" y2="150" />}
+        {wrongCount >= 8 && <line className="body-part" x1="110" y1="120" x2="90" y2="150" />}
 
         {/* Étape 9 – Jambe droite */}
-        {wrongCount >= 9 && <line x1="110" y1="120" x2="130" y2="150" />}
-      </svg>
+        {wrongCount >= 9 && <line className="body-part" x1="110" y1="120" x2="130" y2="150" />}
+      </FigureFrame>
     )
   }
 
@@ -115,35 +142,35 @@ export const HangmanFigure = ({ wrongCount, maxLives }) => {
   // ─────────────────────────────────────────────────────────────
   if (maxLives <= 4) {
     return (
-      <svg viewBox="0 0 160 200" className="hangman-figure" aria-label="Hangman figure">
+      <FigureFrame>
         {/* Potence complète — toujours visible (pas de condition) */}
-        <line x1="20" y1="180" x2="120" y2="180" />
-        <line x1="50" y1="180" x2="50" y2="20" />
-        <line x1="50" y1="20" x2="110" y2="20" />
-        <line x1="110" y1="20" x2="110" y2="40" />
+        <line className="gallows-part" x1="20" y1="180" x2="120" y2="180" />
+        <line className="gallows-part" x1="50" y1="180" x2="50" y2="20" />
+        <line className="gallows-part" x1="50" y1="20" x2="110" y2="20" />
+        <line className="rope-part" x1="110" y1="20" x2="110" y2="40" />
 
         {/* Étape 1 – Tête */}
-        {wrongCount >= 1 && <circle cx="110" cy="55" r="15" />}
+        {wrongCount >= 1 && <Head />}
 
         {/* Étape 2 – Corps */}
-        {wrongCount >= 2 && <line x1="110" y1="70" x2="110" y2="120" />}
+        {wrongCount >= 2 && <line className="body-part" x1="110" y1="70" x2="110" y2="120" />}
 
         {/* Étape 3 – Les deux bras (groupés dans un Fragment) */}
         {wrongCount >= 3 && (
           <>
-            <line x1="110" y1="85" x2="85" y2="105" />
-            <line x1="110" y1="85" x2="135" y2="105" />
+            <line className="body-part" x1="110" y1="85" x2="85" y2="105" />
+            <line className="body-part" x1="110" y1="85" x2="135" y2="105" />
           </>
         )}
 
         {/* Étape 4 – Les deux jambes (groupées dans un Fragment) */}
         {wrongCount >= 4 && (
           <>
-            <line x1="110" y1="120" x2="90" y2="150" />
-            <line x1="110" y1="120" x2="130" y2="150" />
+            <line className="body-part" x1="110" y1="120" x2="90" y2="150" />
+            <line className="body-part" x1="110" y1="120" x2="130" y2="150" />
           </>
         )}
-      </svg>
+      </FigureFrame>
     )
   }
 
@@ -160,30 +187,30 @@ export const HangmanFigure = ({ wrongCount, maxLives }) => {
   //   Étape 6 : jambe droite
   // ─────────────────────────────────────────────────────────────
   return (
-    <svg viewBox="0 0 160 200" className="hangman-figure" aria-label="Hangman figure">
+    <FigureFrame>
       {/* Potence complète — toujours visible */}
-      <line x1="20" y1="180" x2="120" y2="180" />
-      <line x1="50" y1="180" x2="50" y2="20" />
-      <line x1="50" y1="20" x2="110" y2="20" />
-      <line x1="110" y1="20" x2="110" y2="40" />
+      <line className="gallows-part" x1="20" y1="180" x2="120" y2="180" />
+      <line className="gallows-part" x1="50" y1="180" x2="50" y2="20" />
+      <line className="gallows-part" x1="50" y1="20" x2="110" y2="20" />
+      <line className="rope-part" x1="110" y1="20" x2="110" y2="40" />
 
       {/* Étape 1 – Tête */}
-      {wrongCount >= 1 && <circle cx="110" cy="55" r="15" />}
+      {wrongCount >= 1 && <Head />}
 
       {/* Étape 2 – Corps */}
-      {wrongCount >= 2 && <line x1="110" y1="70" x2="110" y2="120" />}
+      {wrongCount >= 2 && <line className="body-part" x1="110" y1="70" x2="110" y2="120" />}
 
       {/* Étape 3 – Bras gauche */}
-      {wrongCount >= 3 && <line x1="110" y1="85" x2="85" y2="105" />}
+      {wrongCount >= 3 && <line className="body-part" x1="110" y1="85" x2="85" y2="105" />}
 
       {/* Étape 4 – Bras droit */}
-      {wrongCount >= 4 && <line x1="110" y1="85" x2="135" y2="105" />}
+      {wrongCount >= 4 && <line className="body-part" x1="110" y1="85" x2="135" y2="105" />}
 
       {/* Étape 5 – Jambe gauche */}
-      {wrongCount >= 5 && <line x1="110" y1="120" x2="90" y2="150" />}
+      {wrongCount >= 5 && <line className="body-part" x1="110" y1="120" x2="90" y2="150" />}
 
       {/* Étape 6 – Jambe droite */}
-      {wrongCount >= 6 && <line x1="110" y1="120" x2="130" y2="150" />}
-    </svg>
+      {wrongCount >= 6 && <line className="body-part" x1="110" y1="120" x2="130" y2="150" />}
+    </FigureFrame>
   )
 }

@@ -1,7 +1,7 @@
 // ============================================================
 // Fichier : GameModePage.jsx
 // Rôle   : Page de sélection du mode de jeu.
-//          Affiche 3 cartes cliquables (Regular, Streak, Speedrun).
+//          Affiche 4 cartes cliquables (Regular, Streak, Speedrun, Mind game).
 //
 // Concepts React / JSX utilisés :
 //   • Tableau de configuration défini HORS du composant :
@@ -45,6 +45,11 @@ const MODES = [
     key: 'speedrun',
     title: 'Speedrun mode',
     description: 'Guess the word before the timer ends.',
+  },
+  {
+    key: 'mindgame',
+    title: 'Mind game mode',
+    description: 'Reveal hidden letter cards to guess. No keyboard input allowed.',
   },
 ]
 

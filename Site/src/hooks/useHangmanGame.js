@@ -24,6 +24,7 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react'
 import { fetchRandomWord } from '../services/hangmanApi.js'
 import {
+  generateMindGameCards,
   getMaskedWord,
   getUniqueLetters,
   isSingleLetter,
@@ -88,12 +89,49 @@ const initialState = {
   uniqueLetters: [],
   guessedLetters: [],
   wrongLetters: [],
+  mindGameCards: [],
   remainingLives: 6,
   remainingSeconds: null,
   hintUsed: false,
   streak: 0,
   status: 'idle',
   error: '',
+}
+
+// --- applyGuessToState ---------------------------------------------
+// Petite fonction utilitaire du reducer : applique la logique métier
+// d'une tentative (bonne ou mauvaise lettre) et retourne le nouvel état.
+// Cela évite de dupliquer la même logique entre GUESS et MIND_REVEAL.
+const applyGuessToState = (state, letter, mode) => {
+  if (state.guessedLetters.includes(letter) || state.wrongLetters.includes(letter)) {
+    return state
+  }
+
+  const isCorrect = state.uniqueLetters.includes(letter)
+
+  if (isCorrect) {
+    const guessedLetters = [...state.guessedLetters, letter]
+    const isWon = state.uniqueLetters.every((item) => guessedLetters.includes(item))
+
+    return {
+      ...state,
+      guessedLetters,
+      status: isWon ? 'won' : 'playing',
+      streak: isWon && mode === 'streak' ? state.streak + 1 : mode === 'streak' ? state.streak : 0,
+    }
+  }
+
+  const wrongLetters = [...state.wrongLetters, letter]
+  const remainingLives = state.remainingLives - 1
+  const isLost = remainingLives <= 0
+
+  return {
+    ...state,
+    wrongLetters,
+    remainingLives,
+    status: isLost ? 'lost' : 'playing',
+    streak: isLost && mode === 'streak' ? 0 : state.streak,
+  }
 }
 
 // --- Le Reducer -----------------------------------------------------
@@ -139,6 +177,7 @@ const reducer = (state, action) => {
       uniqueLetters: [],
       guessedLetters: [],
       wrongLetters: [],
+      mindGameCards: action.payload.mindGameCards,
       remainingLives: action.payload.lives,      // Vies selon difficulté
       remainingSeconds: action.payload.seconds,  // null sauf speedrun
       hintUsed: false,
@@ -187,61 +226,53 @@ const reducer = (state, action) => {
 
     const letter = action.payload.letter
 
-    // Si la lettre a DÉJÀ été proposée (correcte ou incorrecte),
-    // on ignore sans pénalité → on retourne l'état inchangé.
-    // .includes(x) vérifie si le tableau contient l'élément x.
-    if (state.guessedLetters.includes(letter) || state.wrongLetters.includes(letter)) {
+    return applyGuessToState(state, letter, action.payload.mode)
+  }
+
+  // --- Action MIND_REVEAL ------------------------------------------
+  // Action dédiée au mode "mind game" : le joueur clique une carte.
+  // La carte passe en état final (guessed ou wrong) et la tentative
+  // est appliquée avec la même logique métier qu'une action GUESS.
+  if (action.type === 'MIND_REVEAL') {
+    if (state.status !== 'playing') {
       return state
     }
 
-    // On vérifie si la lettre (normalisée, sans accent) fait partie
-    // des lettres uniques du mot secret.
-    const isCorrect = state.uniqueLetters.includes(letter)
+    const card = state.mindGameCards.find((item) => item.id === action.payload.cardId)
 
-    if (isCorrect) {
-      // --- Bonne réponse ---
-      // On ajoute la lettre au tableau des lettres devinées.
-      // Important : on ne fait PAS state.guessedLetters.push(letter)
-      // car ça MODIFIERAIT l'ancien état. On crée un NOUVEAU tableau
-      // avec le spread operator [...ancien, nouveau].
-      const guessedLetters = [...state.guessedLetters, letter]
-
-      // Condition de VICTOIRE : TOUTES les lettres uniques ont été devinées.
-      // .every() retourne true si le callback retourne true pour CHAQUE élément.
-      //
-      // ⚠️ Les espaces et caractères spéciaux ne sont PAS dans uniqueLetters
-      //    (filtrés par getUniqueLetters), donc ils n'ont PAS besoin
-      //    d'être devinés pour gagner.
-      const isWon = state.uniqueLetters.every((item) => guessedLetters.includes(item))
-
-      return {
-        ...state,
-        guessedLetters,
-        status: isWon ? 'won' : 'playing',
-        // Gestion du streak (ternaires imbriqués) :
-        //   victoire en mode streak → streak + 1
-        //   pas encore gagné en streak → on garde le streak actuel
-        //   pas en mode streak → 0
-        streak:
-          isWon && action.payload.mode === 'streak'
-            ? state.streak + 1
-            : action.payload.mode === 'streak'
-              ? state.streak
-              : 0,
-      }
+    if (!card || card.state !== 'hidden') {
+      return state
     }
 
-    // --- Mauvaise réponse ---
-    const wrongLetters = [...state.wrongLetters, letter]
-    const remainingLives = state.remainingLives - 1
-    const isLost = remainingLives <= 0  // Plus de vies = défaite
+    const nextState = applyGuessToState(state, card.letter, action.payload.mode)
+    const nextCardState = state.uniqueLetters.includes(card.letter) ? 'guessed' : 'wrong'
+
+    return {
+      ...(nextState === state ? { ...state } : nextState),
+      mindGameCards: state.mindGameCards.map((item) =>
+        item.id === card.id ? { ...item, state: nextCardState } : item,
+      ),
+    }
+  }
+
+  // --- Action REVEAL_MIND_CARD_BY_LETTER ---------------------------
+  // Utilisée par l'indice en mode mind game : après avoir révélé
+  // automatiquement la bonne lettre, on reflète aussi cet état visuel
+  // dans la grille de cartes.
+  if (action.type === 'REVEAL_MIND_CARD_BY_LETTER') {
+    const card = state.mindGameCards.find(
+      (item) => item.letter === action.payload.letter && item.state === 'hidden',
+    )
+
+    if (!card) {
+      return state
+    }
 
     return {
       ...state,
-      wrongLetters,
-      remainingLives,
-      status: isLost ? 'lost' : 'playing',
-      streak: isLost && action.payload.mode === 'streak' ? 0 : state.streak,
+      mindGameCards: state.mindGameCards.map((item) =>
+        item.id === card.id ? { ...item, state: 'guessed' } : item,
+      ),
     }
   }
 
@@ -341,6 +372,7 @@ export const useHangmanGame = ({ settings, selectedMode }) => {
         lives: maxLives,
         seconds: selectedMode === 'speedrun' ? speedrunSeconds : null,
         mode: selectedMode,
+        mindGameCards: selectedMode === 'mindgame' ? generateMindGameCards() : [],
       },
     })
 
@@ -436,6 +468,26 @@ export const useHangmanGame = ({ settings, selectedMode }) => {
     [selectedMode],
   )
 
+  // --- Fonction révéler une carte en mode mind game ----------------
+  // Appelée par le composant de grille ; elle délègue toute la logique
+  // au reducer (validation lettre + progression des vies/statut).
+  const onMindGameReveal = useCallback(
+    (cardId) => {
+      if (selectedMode !== 'mindgame') {
+        return
+      }
+
+      dispatch({
+        type: 'MIND_REVEAL',
+        payload: {
+          cardId,
+          mode: selectedMode,
+        },
+      })
+    },
+    [selectedMode],
+  )
+
   // --- Fonction utiliser un indice ----------------------------------
   const onHint = useCallback(() => {
     // Guard clauses : vérifications avant d'agir
@@ -462,6 +514,15 @@ export const useHangmanGame = ({ settings, selectedMode }) => {
         mode: selectedMode,
       },
     })
+
+    if (selectedMode === 'mindgame') {
+      dispatch({
+        type: 'REVEAL_MIND_CARD_BY_LETTER',
+        payload: {
+          letter: hiddenLetter,
+        },
+      })
+    }
   }, [selectedMode, settings.hints, state.guessedLetters, state.hintUsed, state.status, state.uniqueLetters])
 
   // --- Valeurs mémorisées (useMemo) ---------------------------------
@@ -491,6 +552,7 @@ export const useHangmanGame = ({ settings, selectedMode }) => {
     error: state.error,
     maskedWord,
     wrongLetters: state.wrongLetters,
+    mindGameCards: state.mindGameCards,
     usedLetters,
     remainingLives: state.remainingLives,
     maxLives,             // ← Nombre total de vies (pour adapter le dessin du pendu)
@@ -499,6 +561,7 @@ export const useHangmanGame = ({ settings, selectedMode }) => {
     hintUsed: state.hintUsed,
     canUseHint: settings.hints && !state.hintUsed && state.status === 'playing',
     onGuess,
+    onMindGameReveal,
     onHint,
     startNewGame,
   }

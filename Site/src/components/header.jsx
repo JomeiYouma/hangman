@@ -36,16 +36,16 @@
 //   key   → identifiant unique (utilisé aussi comme « key » React)
 //   label → texte affiché à l'utilisateur
 const navItems = [
-    { key: 'home', label: 'Homepage' },
-    { key: 'settings', label: 'Settings' },
-    { key: 'gamemode', label: 'Gamemode' },
-    { key: 'contact', label: 'Contact' },
+    { key: 'home', label: 'Terminal' },
+    { key: 'settings', label: 'Config' },
+    { key: 'gamemode', label: 'Protocols' },
+    { key: 'contact', label: 'Operator' },
 ]
 
 export const Header = ({ currentPage, onNavigate }) => {
     return (
         <header className="header">
-            <h1>Hangman Game</h1>
+            <h1>Cipher Breach: Hangman Protocol</h1>
             {/* <nav> est une balise HTML sémantique pour la navigation */}
             <nav>
                 <ul className="nav-list">

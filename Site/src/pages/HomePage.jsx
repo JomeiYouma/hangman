@@ -97,24 +97,24 @@ export const HomePage = ({ settings, selectedMode }) => {
   // -----------------------------------------------------------------
   const modeLabel =
     selectedMode === 'regular'
-      ? 'Regular mode'
+      ? 'Brute force'
       : selectedMode === 'streak'
-        ? 'Streak mode'
+        ? 'Chain breach'
         : selectedMode === 'speedrun'
-          ? 'Speedrun mode'
-          : 'Mind game mode'
+          ? 'Time exploit'
+          : 'Cipher memory'
 
   // --- Calcul du message de statut ----------------------------------
   const statusMessage =
     status === 'loading'
-      ? 'Loading a new word...'
+      ? 'Initializing target hash...'
       : status === 'won'
-        ? 'You won!'
+        ? 'Password cracked.'
         : status === 'lost'
-          ? 'You lost!'
+          ? 'Trace detected. Access denied.'
           : status === 'error'
-            ? 'API error'
-            : 'Game in progress'
+            ? 'Network relay unavailable'
+            : 'Breach in progress'
 
   // --- Rendu JSX ----------------------------------------------------
   // Le « return » d'un composant React retourne du JSX.
@@ -129,15 +129,15 @@ export const HomePage = ({ settings, selectedMode }) => {
     <section className="card engine-layout">
       {/* --- Barre supérieure : titre + chips d'information --- */}
       <div className="engine-topbar">
-        <h2>Engine</h2>
+        <h2>Cracking Console</h2>
         {/* La className "chip-group" affiche les chips en ligne (flex) */}
         <div className="chip-group">
           <span className="chip">{modeLabel}</span>
-          <span className="chip">Lives: {remainingLives}</span>
+          <span className="chip">Stealth traces: {remainingLives}</span>
           {/* Rendu conditionnel : le timer n'apparaît QU'en mode speedrun */}
-          {selectedMode === 'speedrun' && <span className="chip">Time: {remainingSeconds ?? 0}s</span>}
+          {selectedMode === 'speedrun' && <span className="chip">Watchdog: {remainingSeconds ?? 0}s</span>}
           {/* Le streak n'apparaît QU'en mode streak */}
-          {selectedMode === 'streak' && <span className="chip">Streak: {streak}</span>}
+          {selectedMode === 'streak' && <span className="chip">Chain: {streak}</span>}
         </div>
       </div>
 
@@ -177,7 +177,7 @@ export const HomePage = ({ settings, selectedMode }) => {
               disabled={status !== 'playing'}
             />
             <button className="primary-btn" type="submit" disabled={status !== 'playing'}>
-              Guess
+              Inject
             </button>
           </form>
 
@@ -194,12 +194,12 @@ export const HomePage = ({ settings, selectedMode }) => {
       {/* --- Boutons d'action --- */}
       <div className="actions-row">
         <button className="secondary-btn" onClick={startNewGame}>
-          New game
+          New target
         </button>
         {/* Le bouton hint est désactivé si canUseHint est false
             (pas d'indice dispo, déjà utilisé, ou partie non en cours) */}
         <button className="secondary-btn" disabled={!canUseHint} onClick={onHint}>
-          Use hint
+          Use backdoor
         </button>
       </div>
     </section>

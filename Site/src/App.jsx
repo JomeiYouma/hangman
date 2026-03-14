@@ -53,6 +53,7 @@ import { HomePage } from './pages/HomePage.jsx'
 import { SettingsPage } from './pages/SettingsPage.jsx'
 import { GameModePage } from './pages/GameModePage.jsx'
 import { ContactPage } from './pages/ContactPage.jsx'
+import FaultyTerminal from './components/FaultyTerminal.jsx'
 import './styles/app.css'  // Import de fichier CSS → appliqué globalement
 
 // --- Composant App --------------------------------------------------
@@ -135,8 +136,32 @@ const App = () => {
 	//   onNavigate  → callback pour changer de page (= setCurrentPage)
 	return (
 		<main className="app-shell">
+			<div className="terminal-bg-layer" aria-hidden="true">
+				<FaultyTerminal
+					scale={1.5}
+					gridMul={[2, 1]}
+					digitSize={1.2}
+					timeScale={0.5}
+					pause={false}
+					scanlineIntensity={0.5}
+					glitchAmount={1}
+					flickerAmount={1}
+					noiseAmp={1}
+					chromaticAberration={0}
+					dither={0}
+					curvature={0.1}
+					tint="#A7EF9E"
+					mouseReact
+					mouseStrength={0.5}
+					pageLoadAnimation
+					brightness={0.6}
+				/>
+			</div>
+
+			<div className="app-content-layer">
 			<Header currentPage={currentPage} onNavigate={setCurrentPage} />
 			<section className="page-content">{renderPage()}</section>
+			</div>
 		</main>
 	)
 }

@@ -35,12 +35,12 @@
 export const SettingsPage = ({ settings, onChange }) => {
   return (
     <section className="card">
-      <h2>Settings</h2>
+      <h2>System Config</h2>
 
       {/* --- Difficulté (select / liste déroulante) --- */}
       <div className="field-row">
         {/* htmlFor lie le <label> au <select> via son id → clic sur le label = focus sur le select */}
-        <label htmlFor="difficulty">Difficulty</label>
+        <label htmlFor="difficulty">Firewall level</label>
         {/* value contrôlée par React : la valeur affichée dépend de l'état */}
         {/* Quand l'utilisateur change la sélection, onChange est appelé
             avec UN OBJET contenant juste la propriété modifiée.
@@ -50,15 +50,15 @@ export const SettingsPage = ({ settings, onChange }) => {
           value={settings.difficulty}
           onChange={(event) => onChange({ difficulty: event.target.value })}
         >
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
+          <option value="easy">Low</option>
+          <option value="medium">Elevated</option>
+          <option value="hard">Critical</option>
         </select>
       </div>
 
       {/* --- Langue --- */}
       <div className="field-row">
-        <label htmlFor="language">Language</label>
+        <label htmlFor="language">Target locale</label>
         <select
           id="language"
           value={settings.language}
@@ -71,7 +71,7 @@ export const SettingsPage = ({ settings, onChange }) => {
 
       {/* --- Indices (checkbox) --- */}
       <div className="field-row checkbox-row">
-        <label htmlFor="hints">Hints</label>
+        <label htmlFor="hints">Enable backdoor hint</label>
         {/* Pour une checkbox, c'est « checked » et non « value » */}
         {/* event.target.checked retourne true ou false */}
         <input

@@ -33,23 +33,23 @@
 const MODES = [
   {
     key: 'regular',
-    title: 'Regular mode',
-    description: 'Classic hangman with lives.',
+    title: 'Brute force',
+    description: 'Classic letter attack with limited traces.',
   },
   {
     key: 'streak',
-    title: 'Streak mode',
-    description: 'Win consecutive games to build your streak.',
+    title: 'Chain breach',
+    description: 'Crack consecutive passwords to raise your chain score.',
   },
   {
     key: 'speedrun',
-    title: 'Speedrun mode',
-    description: 'Guess the word before the timer ends.',
+    title: 'Time exploit',
+    description: 'Break the target before the watchdog timer expires.',
   },
   {
     key: 'mindgame',
-    title: 'Mind game mode',
-    description: 'Reveal hidden letter cards to guess. No keyboard input allowed.',
+    title: 'Cipher memory',
+    description: 'Reveal hidden glyph cards. Keyboard injection is disabled.',
   },
 ]
 

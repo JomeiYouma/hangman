@@ -13,12 +13,25 @@
 //
 // Debug  : console.log('[ContactPage] rendu')
 // ============================================================
+import Lanyard from '../components/Lanyard.jsx'
+
 export const ContactPage = () => {
   return (
-    <section className="card">
-      <h2>Contact</h2>
-      <p>You can add your GitHub, LinkedIn or portfolio links here.</p>
-      <p>This section is ready for your personal information.</p>
+    <section className="card contact-layout">
+      <div>
+        <h2>Operator Profile</h2>
+        <p className="status-line">Identity: Youma / Raphaël MADORÉ</p>
+        <p>Role: Web full stack developer</p>
+        <p>
+          LinkedIn:{' '}
+          <a href="https://www.linkedin.com/in/raphaël-madoré/" target="_blank" rel="noreferrer" className="contact-link">
+            https://www.linkedin.com/in/raphaël-madoré/
+          </a>
+        </p>
+        <p className="contact-note">Drag the badge to simulate access card validation.</p>
+      </div>
+
+      <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
     </section>
   )
 }

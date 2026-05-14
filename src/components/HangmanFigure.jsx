@@ -33,7 +33,7 @@ const FigureFrame = ({ children }) => {
     <svg viewBox="0 0 160 200" className="hangman-figure" aria-label="Hangman figure">
       <defs>
         <radialGradient id="figureFog" cx="50%" cy="35%" r="65%">
-          <stop offset="0%" stopColor="#1c8f66" stopOpacity="0.45" />
+          <stop offset="0%" stopColor="#8f2d3e" stopOpacity="0.45" />
           <stop offset="100%" stopColor="#030507" stopOpacity="0" />
         </radialGradient>
       </defs>

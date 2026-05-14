@@ -26,12 +26,12 @@ const IdentityCard = ({ isMobile }) => {
 
       <mesh position={[0, 0.65, 0.05]}>
         <planeGeometry args={[1.33, 0.52]} />
-        <meshBasicMaterial color="#1effaa" transparent opacity={0.12} />
+        <meshBasicMaterial color="#ff5b78" transparent opacity={0.14} />
       </mesh>
 
       <mesh position={[-0.53, 0.66, 0.054]}>
         <circleGeometry args={[0.18, 64]} />
-        <meshBasicMaterial color="#0f2b22" transparent opacity={0.85} />
+        <meshBasicMaterial color="#311019" transparent opacity={0.85} />
       </mesh>
 
       <mesh position={[-0.53, 0.66, 0.056]}>
@@ -41,7 +41,7 @@ const IdentityCard = ({ isMobile }) => {
 
       <mesh position={[0, -0.07, 0.05]}>
         <planeGeometry args={[1.3, 0.02]} />
-        <meshBasicMaterial color="#2bffb5" transparent opacity={0.24} />
+        <meshBasicMaterial color="#ff6e85" transparent opacity={0.24} />
       </mesh>
 
       <mesh position={[0, -0.82, 0.05]}>
@@ -49,7 +49,7 @@ const IdentityCard = ({ isMobile }) => {
         <meshBasicMaterial color="#0f2324" transparent opacity={0.8} />
       </mesh>
 
-      <Text position={[0, 0.82, 0.058]} fontSize={0.075} color="#a6ffda" anchorX="center" anchorY="middle" maxWidth={1.25} textAlign="center">
+      <Text position={[0, 0.82, 0.058]} fontSize={0.075} color="#ffb8c3" anchorX="center" anchorY="middle" maxWidth={1.25} textAlign="center">
         YOUMA
       </Text>
 
@@ -65,7 +65,7 @@ const IdentityCard = ({ isMobile }) => {
         ACCESS LEVEL: AUTHORIZED
       </Text>
 
-      <Text position={[0, -1.0, 0.058]} fontSize={0.045} color="#7fe9bc" anchorX="center" anchorY="middle" textAlign="center">
+      <Text position={[0, -1.0, 0.058]} fontSize={0.045} color="#ff95a4" anchorX="center" anchorY="middle" textAlign="center">
         CIPHER BREACH UNIT
       </Text>
     </group>
@@ -208,8 +208,8 @@ export default function Lanyard({ position = [0, 0, 20], gravity = [0, -40, 0], 
         </Physics>
 
         <Environment blur={0.8}>
-          <Lightformer intensity={2} color="#9dffe0" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
-          <Lightformer intensity={3} color="#87ffdd" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={2} color="#ff9aa8" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={3} color="#ff8396" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
           <Lightformer intensity={3} color="#b2e8ff" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
         </Environment>
       </Canvas>

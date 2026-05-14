@@ -1,16 +1,16 @@
 :root {
   font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
-  color: #ffc2c2;
+  color: #bbffcf;
   --bg-0: #030507;
-  --bg-1: #180505;
-  --panel: rgba(24, 6, 8, 0.82);
-  --panel-strong: rgba(13, 3, 5, 0.9);
-  --line: #8f2c34;
-  --line-soft: #6a2028;
-  --text-main: #ffc0c4;
-  --text-dim: #d28890;
-  --accent: #ff4f68;
-  --accent-2: #ffadb7;
+  --bg-1: #051218;
+  --panel: rgba(4, 18, 14, 0.82);
+  --panel-strong: rgba(2, 12, 10, 0.9);
+  --line: #1b8d65;
+  --line-soft: #146447;
+  --text-main: #b5ffcb;
+  --text-dim: #7ec99a;
+  --accent: #2af7a4;
+  --accent-2: #8cffc9;
   --danger: #ff4c79;
 }
 
@@ -22,7 +22,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--text-main);
-  background: radial-gradient(circle at 30% 18%, rgba(146, 34, 52, 0.22), transparent 40%), var(--bg-0);
+  background: radial-gradient(circle at 30% 18%, rgba(31, 125, 98, 0.2), transparent 40%), var(--bg-0);
 }
 
 a {
@@ -73,11 +73,11 @@ select {
 }
 
 .header {
-  background: linear-gradient(180deg, rgba(30, 8, 11, 0.9), rgba(18, 5, 7, 0.92));
+  background: linear-gradient(180deg, rgba(6, 24, 19, 0.9), rgba(4, 15, 12, 0.92));
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 1rem;
-  box-shadow: 0 0 0 1px rgba(255, 79, 104, 0.2), 0 20px 42px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 1px rgba(42, 247, 164, 0.2), 0 20px 42px rgba(0, 0, 0, 0.45);
 }
 
 .header h1 {
@@ -86,7 +86,7 @@ select {
   letter-spacing: 0.04em;
   font-size: 1.25rem;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(255, 79, 104, 0.45);
+  text-shadow: 0 0 10px rgba(42, 247, 164, 0.45);
 }
 
 .nav-list {
@@ -100,7 +100,7 @@ select {
 
 .nav-btn {
   border: 1px solid var(--line-soft);
-  background: rgba(20, 7, 9, 0.9);
+  background: rgba(4, 16, 13, 0.9);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
@@ -115,9 +115,9 @@ select {
 
 .nav-btn.active {
   border-color: var(--accent);
-  color: #2a0407;
-  background: linear-gradient(180deg, #ffb4bf, #ff6075);
-  box-shadow: 0 0 16px rgba(255, 79, 104, 0.45);
+  color: #022311;
+  background: linear-gradient(180deg, #8dffcd, #31e89f);
+  box-shadow: 0 0 16px rgba(42, 247, 164, 0.45);
 }
 
 .page-content {
@@ -129,7 +129,7 @@ select {
   border: 1px solid var(--line-soft);
   border-radius: 14px;
   padding: 1rem;
-  box-shadow: inset 0 0 0 1px rgba(255, 79, 104, 0.08), 0 20px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(42, 247, 164, 0.08), 0 20px 40px rgba(0, 0, 0, 0.45);
 }
 
 .card h2 {
@@ -153,7 +153,7 @@ select {
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   padding: 0.45rem 0.6rem;
-  background: rgba(13, 4, 6, 0.95);
+  background: rgba(2, 12, 10, 0.95);
   color: var(--accent-2);
 }
 
@@ -171,13 +171,13 @@ select {
 }
 
 .primary-btn {
-  background: linear-gradient(180deg, #ff7386, #d93049);
-  color: #2b060b;
-  border-color: #ff9aa8;
+  background: linear-gradient(180deg, #1ff7a2, #0ba86d);
+  color: #032112;
+  border-color: #5effbe;
 }
 
 .secondary-btn {
-  background: rgba(17, 6, 8, 0.95);
+  background: rgba(5, 20, 16, 0.95);
   color: var(--text-main);
 }
 
@@ -185,7 +185,7 @@ select {
 .secondary-btn:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
-  box-shadow: 0 0 16px rgba(255, 79, 104, 0.28);
+  box-shadow: 0 0 16px rgba(42, 247, 164, 0.28);
 }
 
 .primary-btn:disabled,
@@ -223,7 +223,7 @@ select {
   padding: 0.25rem 0.6rem;
   font-size: 0.85rem;
   color: var(--accent-2);
-  background: rgba(40, 11, 15, 0.72);
+  background: rgba(6, 33, 24, 0.72);
 }
 
 .hangman-figure {
@@ -238,32 +238,32 @@ select {
 }
 
 .gallows-part {
-  stroke: #ffb7c0;
+  stroke: #95f0d6;
   opacity: 0.85;
 }
 
 .rope-part {
-  stroke: #d06a76;
+  stroke: #58bc94;
   opacity: 0.9;
 }
 
 .head-part,
 .body-part {
-  stroke: #ff5b72;
-  filter: drop-shadow(0 0 6px rgba(255, 91, 114, 0.6));
+  stroke: #2ff9a8;
+  filter: drop-shadow(0 0 6px rgba(47, 249, 168, 0.6));
 }
 
 .head-part {
-  fill: rgba(175, 34, 59, 0.16);
+  fill: rgba(27, 179, 120, 0.15);
 }
 
 .scar-part {
-  stroke: #ffd3d9;
+  stroke: #bcffe1;
   stroke-width: 2.4;
 }
 
 .eye-glow {
-  fill: #ffd3d9;
+  fill: #bcffe1;
   stroke: none;
 }
 
@@ -273,13 +273,13 @@ select {
   margin: 0;
   word-break: break-word;
   color: var(--accent-2);
-  text-shadow: 0 0 10px rgba(255, 79, 104, 0.3);
+  text-shadow: 0 0 10px rgba(42, 247, 164, 0.3);
 }
 
 .status-line {
   margin: 0;
   font-weight: 600;
-  color: #ffd2d8;
+  color: #c6ffe2;
 }
 
 .error-line {
@@ -303,14 +303,14 @@ select {
   padding: 0.35rem;
   border-radius: 8px;
   border: 1px solid var(--line-soft);
-  background: rgba(20, 7, 10, 0.95);
+  background: rgba(4, 18, 15, 0.95);
   color: var(--accent-2);
   cursor: pointer;
 }
 
 .mindgame-instruction {
   margin: 0;
-  color: #ffb8c3;
+  color: #9ff0c7;
   font-weight: 600;
 }
 
@@ -323,18 +323,18 @@ select {
 .mind-card {
   min-height: 46px;
   border-radius: 10px;
-  border: 1px solid #8d2b38;
-  background: linear-gradient(180deg, rgba(31, 10, 14, 0.95), rgba(17, 5, 7, 0.98));
-  color: #ffc4cb;
+  border: 1px solid #187353;
+  background: linear-gradient(180deg, rgba(8, 29, 22, 0.95), rgba(4, 14, 10, 0.98));
+  color: #b0ffd1;
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .mind-card.guessed {
-  border-color: #ff7285;
-  background: linear-gradient(180deg, rgba(112, 29, 45, 0.95), rgba(65, 18, 28, 0.95));
-  color: #ffd9de;
+  border-color: #44ffba;
+  background: linear-gradient(180deg, rgba(22, 80, 58, 0.95), rgba(8, 45, 31, 0.95));
+  color: #d5ffe9;
 }
 
 .mind-card.wrong {
@@ -359,8 +359,8 @@ select {
   text-align: left;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(28, 8, 12, 0.9), rgba(14, 4, 6, 0.95));
-  color: #ffc8cf;
+  background: linear-gradient(180deg, rgba(8, 26, 20, 0.9), rgba(3, 13, 10, 0.95));
+  color: #bafad4;
   padding: 0.75rem;
   cursor: pointer;
 }
@@ -371,13 +371,13 @@ select {
 
 .mode-card p {
   margin: 0.45rem 0 0;
-  color: #d98690;
+  color: #7cc49b;
 }
 
 .mode-card.active {
   border-color: var(--accent);
-  box-shadow: 0 0 16px rgba(255, 79, 104, 0.35);
-  background: linear-gradient(180deg, rgba(84, 22, 32, 0.95), rgba(31, 9, 13, 0.95));
+  box-shadow: 0 0 16px rgba(42, 247, 164, 0.35);
+  background: linear-gradient(180deg, rgba(14, 58, 42, 0.95), rgba(5, 21, 16, 0.95));
 }
 
 .contact-layout {
@@ -390,7 +390,7 @@ select {
 }
 
 .contact-note {
-  color: #df9ea8;
+  color: #90dcb2;
   font-size: 0.92rem;
 }
 

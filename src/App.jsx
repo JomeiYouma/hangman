@@ -150,7 +150,7 @@ const App = () => {
 					chromaticAberration={0}
 					dither={0}
 					curvature={0.1}
-					tint="#FF99A6"
+					tint="#A7EF9E"
 					mouseReact
 					mouseStrength={0.5}
 					pageLoadAnimation

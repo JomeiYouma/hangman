@@ -9,65 +9,163 @@ import './Lanyard.css'
 
 extend({ MeshLineGeometry, MeshLineMaterial })
 
+const CornerBracket = ({ position, rotation }) => (
+  <group position={position} rotation={rotation}>
+    <mesh position={[0.04, 0, 0]}>
+      <planeGeometry args={[0.08, 0.005]} />
+      <meshBasicMaterial color="#2af7a4" transparent opacity={0.85} />
+    </mesh>
+    <mesh position={[0, -0.04, 0]}>
+      <planeGeometry args={[0.005, 0.08]} />
+      <meshBasicMaterial color="#2af7a4" transparent opacity={0.85} />
+    </mesh>
+  </group>
+)
+
 const IdentityCard = ({ isMobile }) => {
   const photoTexture = useTexture(profilePicture)
 
   return (
     <group scale={2.15} position={[0, -1.2, -0.05]}>
+      {/* Corps métallique de la carte */}
       <mesh>
         <boxGeometry args={[1.68, 2.34, 0.08]} />
-        <meshPhysicalMaterial color="#0e1519" roughness={0.42} metalness={0.72} clearcoat={isMobile ? 0.2 : 0.9} />
+        <meshPhysicalMaterial
+          color="#070f0c"
+          roughness={0.32}
+          metalness={0.68}
+          clearcoat={isMobile ? 0.25 : 1}
+          clearcoatRoughness={0.18}
+          reflectivity={0.5}
+        />
       </mesh>
 
+      {/* Liseré vert métallique */}
+      <mesh position={[0, 0, 0.041]}>
+        <planeGeometry args={[1.62, 2.28]} />
+        <meshBasicMaterial color="#1b8d65" transparent opacity={0.5} />
+      </mesh>
+
+      {/* Panneau frontal sombre */}
       <mesh position={[0, 0, 0.045]}>
         <planeGeometry args={[1.56, 2.2]} />
-        <meshBasicMaterial color="#071418" transparent opacity={0.94} />
+        <meshBasicMaterial color="#04100c" transparent opacity={0.96} />
       </mesh>
 
-      <mesh position={[0, 0.65, 0.05]}>
-        <planeGeometry args={[1.33, 0.52]} />
-        <meshBasicMaterial color="#ff5b78" transparent opacity={0.14} />
+      {/* === HEADER === */}
+      <mesh position={[0, 0.97, 0.05]}>
+        <planeGeometry args={[1.5, 0.14]} />
+        <meshBasicMaterial color="#0a1e16" transparent opacity={0.95} />
+      </mesh>
+      <mesh position={[0, 0.88, 0.052]}>
+        <planeGeometry args={[1.5, 0.004]} />
+        <meshBasicMaterial color="#2af7a4" transparent opacity={0.75} />
       </mesh>
 
-      <mesh position={[-0.53, 0.66, 0.054]}>
-        <circleGeometry args={[0.18, 64]} />
-        <meshBasicMaterial color="#311019" transparent opacity={0.85} />
-      </mesh>
+      <Text position={[-0.7, 0.97, 0.058]} fontSize={0.045} color="#2af7a4" anchorX="left" anchorY="middle" textAlign="left">
+        ◆ IDENTITY CARD
+      </Text>
+      <Text position={[0.7, 0.97, 0.058]} fontSize={0.04} color="#7ec99a" anchorX="right" anchorY="middle" textAlign="right">
+        ID // 042-A7
+      </Text>
 
-      <mesh position={[-0.53, 0.66, 0.056]}>
-        <circleGeometry args={[0.16, 64]} />
+      {/* === PHOTO === */}
+      {/* Anneau extérieur */}
+      <mesh position={[0, 0.42, 0.05]}>
+        <ringGeometry args={[0.31, 0.345, 64]} />
+        <meshBasicMaterial color="#1b8d65" transparent opacity={0.9} />
+      </mesh>
+      {/* Halo */}
+      <mesh position={[0, 0.42, 0.049]}>
+        <circleGeometry args={[0.38, 64]} />
+        <meshBasicMaterial color="#082018" transparent opacity={0.85} />
+      </mesh>
+      {/* Fond photo */}
+      <mesh position={[0, 0.42, 0.052]}>
+        <circleGeometry args={[0.31, 64]} />
+        <meshBasicMaterial color="#020806" transparent opacity={1} />
+      </mesh>
+      {/* Photo */}
+      <mesh position={[0, 0.42, 0.055]}>
+        <circleGeometry args={[0.29, 64]} />
         <meshBasicMaterial map={photoTexture} transparent alphaTest={0.15} />
       </mesh>
 
-      <mesh position={[0, -0.07, 0.05]}>
-        <planeGeometry args={[1.3, 0.02]} />
-        <meshBasicMaterial color="#ff6e85" transparent opacity={0.24} />
-      </mesh>
-
-      <mesh position={[0, -0.82, 0.05]}>
-        <planeGeometry args={[1.22, 0.38]} />
-        <meshBasicMaterial color="#0f2324" transparent opacity={0.8} />
-      </mesh>
-
-      <Text position={[0, 0.82, 0.058]} fontSize={0.075} color="#ffb8c3" anchorX="center" anchorY="middle" maxWidth={1.25} textAlign="center">
+      {/* === NOM === */}
+      <Text position={[0, 0, 0.058]} fontSize={0.14} color="#d8ffe5" anchorX="center" anchorY="middle" maxWidth={1.4} textAlign="center">
         YOUMA
       </Text>
+      {/* Underline */}
+      <mesh position={[0, -0.09, 0.052]}>
+        <planeGeometry args={[0.4, 0.003]} />
+        <meshBasicMaterial color="#2af7a4" transparent opacity={0.8} />
+      </mesh>
 
-      <Text position={[0, 0.56, 0.058]} fontSize={0.072} color="#7fd8ff" anchorX="center" anchorY="middle" textAlign="center">
-        WEB FULL STACK
+      <Text position={[0, -0.18, 0.058]} fontSize={0.058} color="#7ec99a" anchorX="center" anchorY="middle" textAlign="center">
+        WEB · FULL · STACK
       </Text>
 
-      <Text position={[0, -0.2, 0.058]} fontSize={0.058} color="#9fd3ff" anchorX="center" anchorY="middle" maxWidth={1.16} textAlign="center">
-        Agent Operational Name : R. MADORE
+      {/* === BLOC INFOS === */}
+      {/* Séparateur horizontal */}
+      <mesh position={[0, -0.46, 0.052]}>
+        <planeGeometry args={[1.3, 0.003]} />
+        <meshBasicMaterial color="#1b8d65" transparent opacity={0.4} />
+      </mesh>
+
+      <Text position={[-0.6, -0.56, 0.058]} fontSize={0.036} color="#7ec99a" anchorX="left" anchorY="middle" textAlign="left">
+        AGENT
+      </Text>
+      <Text position={[-0.6, -0.63, 0.058]} fontSize={0.054} color="#b5ffcb" anchorX="left" anchorY="middle" textAlign="left">
+        R. MADORE
       </Text>
 
-      <Text position={[0, -0.83, 0.058]} fontSize={0.058} color="#ff70ac" anchorX="center" anchorY="middle" textAlign="center">
-        ACCESS LEVEL: AUTHORIZED
+      <Text position={[0.6, -0.56, 0.058]} fontSize={0.036} color="#7ec99a" anchorX="right" anchorY="middle" textAlign="right">
+        UNIT
+      </Text>
+      <Text position={[0.6, -0.63, 0.058]} fontSize={0.054} color="#b5ffcb" anchorX="right" anchorY="middle" textAlign="right">
+        CIPHER-01
       </Text>
 
-      <Text position={[0, -1.0, 0.058]} fontSize={0.045} color="#ff95a4" anchorX="center" anchorY="middle" textAlign="center">
-        CIPHER BREACH UNIT
+      {/* Séparateur horizontal */}
+      <mesh position={[0, -0.72, 0.052]}>
+        <planeGeometry args={[1.3, 0.003]} />
+        <meshBasicMaterial color="#1b8d65" transparent opacity={0.4} />
+      </mesh>
+
+      {/* === FOOTER === */}
+      <mesh position={[0, -0.93, 0.05]}>
+        <planeGeometry args={[1.42, 0.2]} />
+        <meshBasicMaterial color="#0a1e16" transparent opacity={0.95} />
+      </mesh>
+      {/* Bandeau d'accent */}
+      <mesh position={[-0.66, -0.93, 0.052]}>
+        <planeGeometry args={[0.06, 0.2]} />
+        <meshBasicMaterial color="#2af7a4" transparent opacity={0.9} />
+      </mesh>
+
+      <Text position={[-0.58, -0.87, 0.058]} fontSize={0.04} color="#2af7a4" anchorX="left" anchorY="middle" textAlign="left">
+        ACCESS LEVEL
       </Text>
+      <Text position={[-0.58, -0.95, 0.058]} fontSize={0.058} color="#d8ffe5" anchorX="left" anchorY="middle" textAlign="left">
+        AUTHORIZED
+      </Text>
+
+      <Text position={[0.66, -0.87, 0.058]} fontSize={0.036} color="#7ec99a" anchorX="right" anchorY="middle" textAlign="right">
+        CLEARANCE
+      </Text>
+      <Text position={[0.66, -0.95, 0.058]} fontSize={0.05} color="#b5ffcb" anchorX="right" anchorY="middle" textAlign="right">
+        // BREACH
+      </Text>
+
+      <Text position={[0, -1.06, 0.058]} fontSize={0.034} color="#56a079" anchorX="center" anchorY="middle" textAlign="center">
+        CIPHER BREACH UNIT · CLASSIFIED
+      </Text>
+
+      {/* === COINS DÉCORATIFS === */}
+      <CornerBracket position={[-0.74, 1.04, 0.052]} rotation={[0, 0, 0]} />
+      <CornerBracket position={[0.74, 1.04, 0.052]} rotation={[0, 0, -Math.PI / 2]} />
+      <CornerBracket position={[0.74, -1.04, 0.052]} rotation={[0, 0, Math.PI]} />
+      <CornerBracket position={[-0.74, -1.04, 0.052]} rotation={[0, 0, Math.PI / 2]} />
     </group>
   )
 }
@@ -207,10 +305,11 @@ export default function Lanyard({ position = [0, 0, 20], gravity = [0, -40, 0], 
           <Band isMobile={isMobile} />
         </Physics>
 
-        <Environment blur={0.8}>
-          <Lightformer intensity={2} color="#ff9aa8" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
-          <Lightformer intensity={3} color="#ff8396" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
-          <Lightformer intensity={3} color="#b2e8ff" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+        <Environment blur={0.85}>
+          <Lightformer intensity={2.2} color="#9dffe0" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={2.8} color="#56e6b2" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={2.4} color="#c9ffe9" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+          <Lightformer intensity={1.4} color="#1b8d65" position={[0, 2, -2]} rotation={[0, 0, 0]} scale={[60, 0.4, 1]} />
         </Environment>
       </Canvas>
     </div>
